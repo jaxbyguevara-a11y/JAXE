@@ -1,6 +1,9 @@
-# Auditoría Técnica Integral — LookIA
+# Auditoría Técnica Integral — JAXIA
 
-**Aplicación:** LookIA — "Vístete con lo que tienes"
+**Aplicación:** JAXIA — "Vístete con lo que tienes"
+**Nombre auditado:** el proyecto se entregó como *LookIA* y se renombró a **JAXIA**
+durante este trabajo. Los identificadores `LookIA*` que aparecen citados abajo son
+el código **original**, tal como estaba al auditarlo.
 **Repositorio:** `jaxbyguevara-a11y/JAXE`
 **Fecha:** 18 de septiembre de 2026
 **Alcance:** 62 archivos · 27 fuentes Kotlin · 8.249 líneas
@@ -11,7 +14,7 @@
 
 ## 1. Resumen ejecutivo
 
-LookIA es una app Android nativa (Kotlin + Jetpack Compose + Room) para gestión
+JAXIA es una app Android nativa (Kotlin + Jetpack Compose + Room) para gestión
 de clóset consciente, con avatar virtual, comunidad de intercambio e inspiración
 espiritual diaria. La base de UI es **sólida y bien estructurada**: la separación
 en capas (`data/model` → `dao` → `repository` → `ui`) es correcta, el uso de
@@ -37,7 +40,7 @@ Wrapper) y **el build de release falla siempre** (firma mal configurada).
 
 ### Hallazgo estructural: la "IA" no existe
 
-El nombre comercial es **LookIA**, el `metadata.json` declara la capacidad
+El nombre comercial es **JAXIA**, el `metadata.json` declara la capacidad
 `MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API`, y el `build.gradle.kts` incluye
 `firebase-ai`, `retrofit`, `okhttp`, `moshi` y `coil`.
 
@@ -188,7 +191,7 @@ detecta tras la publicación, de **suspensión de la cuenta de desarrollador**.
 ### B-06 · `fallbackToDestructiveMigration()` — pérdida total de datos del usuario
 
 ```kotlin
-Room.databaseBuilder(context, AppDatabase::class.java, "lookia_database")
+Room.databaseBuilder(context, AppDatabase::class.java, "jaxia_database")
     .fallbackToDestructiveMigration()   // ← borra la BD ante cualquier cambio
     .build()
 ```
@@ -421,6 +424,35 @@ el Estatuto del Consumidor (Ley 1480 de 2011) en materia de información engaño
 
 ---
 
+### A-13 · Los looks generados nunca se guardaban: "favorito" y feedback no hacían nada
+
+*Hallazgo detectado durante la corrección, no en la pasada inicial.*
+
+`generateOutfitsForOccasion` construye objetos `Outfit` sin insertarlos en la
+base de datos, por lo que **los tres conservan el `id = 0` por defecto**:
+
+```kotlin
+Outfit(title = "Look Recomendado…", …)   // id = 0
+Outfit(title = "Alternativa Cómoda…", …) // id = 0
+Outfit(title = "Alternativa Creativa…", …) // id = 0
+```
+
+La interfaz los trata como filas reales:
+
+```kotlin
+onToggleFavorite = { onToggleFavorite(outfit.id) }   // siempre 0
+```
+
+que acaba en `UPDATE outfits SET isFavorite = NOT isFavorite WHERE id = 0` — una
+sentencia que **no coincide con ninguna fila**. Lo mismo con el cuestionario
+"Autentica tu look": el feedback se registra contra `outfitId = 0` y
+`markOutfitWorn(0)` no actualiza nada.
+
+Resultado para el usuario: pulsa el corazón, la app no da error, y nada se
+guarda. Es un fallo silencioso en dos de las funciones principales.
+
+---
+
 ### A-11 · Faltan requisitos obligatorios de Play para datos personales
 
 | Requisito | Estado |
@@ -454,14 +486,14 @@ actuales, que ya publican bytecode 17.
 | ID | Hallazgo | Detalle |
 |---|---|---|
 | **M-01** | Cero internacionalización | **0 usos de `stringResource`**. Los ~8.000 strings en español están embebidos en el código. `strings.xml` contiene únicamente `app_name`. Sin `localeConfig`. |
-| **M-02** | Accesibilidad incompleta | **47 de 71** `contentDescription` son `null`. Varios son iconos informativos (estado de captura, badges de condición) que TalkBack debería anunciar. |
+| **M-02** | Accesibilidad — en su mayoría correcta | 47 de 71 `contentDescription` son `null`, pero la verificación posterior mostró que **43 son iconos decorativos acompañados de texto**, donde `null` es la práctica correcta: TalkBack debe ignorarlos y leer el texto. Todos los `IconButton` sí llevan etiqueta ("Favorito", "Eliminar", "Cerrar"). **El único hueco real** era el selector de color de `AddGarmentDialog`: un círculo pulsable sin texto alguno, que TalkBack no podía anunciar. Corregido con `semantics { contentDescription = …; role = Role.RadioButton; selected = … }`. |
 | **M-03** | Formato de moneda incorrecto | `"$${value.toInt()} COP"` produce `$420000 COP`. Sin separador de miles ni `NumberFormat` por locale. Lo correcto en Colombia es `$420.000`. |
 | **M-04** | Sin reglas ProGuard para Room/Moshi | `proguard-rules.pro` está vacío (solo comentarios de plantilla). Al activar R8 (B-04), Room y Moshi romperán en runtime por reflexión. |
 | **M-05** | `exportSchema = false` | Impide versionar el esquema y escribir migraciones verificables. |
-| **M-06** | Cobertura de tests ~0 % | 3 tests unitarios sobre un `object` de textos, 1 screenshot de un `Text("LookIA")` suelto, 1 instrumentado que compara `packageName`. **Cero** cobertura de `LookIARepository` (toda la lógica de negocio) y de `LookIAViewModel`. |
+| **M-06** | Cobertura de tests ~0 % | 3 tests unitarios sobre un `object` de textos, 1 screenshot de un `Text("LookIA …")` suelto, 1 instrumentado que compara `packageName`. **Cero** cobertura de `LookIARepository` (toda la lógica de negocio) y de `LookIAViewModel`. |
 | **M-07** | Sin CI | No hay `.github/workflows`. Nada verifica que el proyecto compile antes de publicar. |
 | **M-08** | Recursos de plantilla sin personalizar | `themes.xml` declara `Theme.MyApplication`; `colors.xml` conserva la paleta morada por defecto (`purple_200`, `teal_700`…) que no se usa y no corresponde a la identidad terracota. |
-| **M-09** | Iconos de launcher genéricos | `ic_launcher_foreground.xml` es el robot verde de Android Studio. Existen `ic_lookia_logo.jpg` e `img_lookia_hero.jpg` sin integrar como icono. Play exige icono propio de 512×512. |
+| **M-09** | Iconos de launcher genéricos | `ic_launcher_foreground.xml` es el robot verde de Android Studio. Existen `ic_jaxia_logo.jpg` e `img_jaxia_hero.jpg` sin integrar como icono. Play exige icono propio de 512×512. |
 | **M-10** | `README.md` es el de AI Studio | Incluye banner de Google, enlace a `ai.studio`, e instrucciones que contradicen la configuración real del proyecto. |
 | **M-11** | Parámetros ignorados | `generateOutfitsForOccasion(occasion, mood, …)` recibe ambos parámetros y **no los usa** para nada salvo copiarlos al objeto resultante. Las tres propuestas son idénticas para "Reunión de trabajo / Quiero sentirme segura" y para cualquier otra combinación. |
 | **M-12** | Datos semilla con identidad ficticia | El avatar por defecto se llama **"Camila"**, con altura 166 cm, talla M y tono de piel concreto. Un usuario nuevo encuentra el perfil de otra persona ya rellenado en lugar de un onboarding. |
@@ -544,7 +576,7 @@ publicación.
 etiquetado, y añadir IA como función posterior cuando haya tracción.
 
 **Recomiendo la Opción 3.** Te permite publicar en semanas en lugar de meses,
-elimina el riesgo de misrepresentation, y conserva el nombre "LookIA" como marca
+elimina el riesgo de misrepresentation, y conserva el nombre "JAXIA" como marca
 sin que constituya una afirmación técnica (igual que "Loganía" o "Mediadía" no
 prometen nada). Lo que **no** es sostenible es el estado actual: declarar
 capacidad Gemini en metadatos y no tener IA.
@@ -576,8 +608,11 @@ capacidad Gemini en metadatos y no tener IA.
 16. Purgar las 9 dependencias sin usar y el permiso `INTERNET` (A-01, A-02)
 17. Forzar tema claro para eliminar la ilegibilidad en modo oscuro (A-07)
 18. Formato de moneda con locale `es-CO` (M-03)
-19. Tests reales de repositorio y ViewModel (M-06)
-20. CI que compile y firme el AAB (M-07)
+19. Persistir los looks generados para que favoritos y feedback funcionen (A-13)
+20. Tests reales del motor de looks, del cálculo de ahorro y del formato de moneda (M-06)
+21. Etiqueta de accesibilidad en el selector de color (M-02)
+22. CI que compile, pruebe y firme el AAB (M-07)
+23. Renombrado completo a JAXIA e icono adaptativo vectorial (§8-bis)
 
 ### Fase 4 — Pendiente por tu parte *(requiere decisiones o activos)*
 - Definir `applicationId` **definitivo** antes de la primera subida (B-02)
@@ -589,6 +624,71 @@ capacidad Gemini en metadatos y no tener IA.
   recomendable solo si se planea soportar más de un idioma
 - Refactor completo a `MaterialTheme.colorScheme` para dar soporte real a modo
   oscuro (A-07) — 174 sustituciones
+
+---
+
+## 8-bis. Cambio de marca a JAXIA
+
+Durante el trabajo se confirmó el nombre definitivo, **JAXIA**, y se aportó el
+logotipo. Cambios aplicados:
+
+| Elemento | Antes | Ahora |
+|---|---|---|
+| Nombre visible | LookIA | **JAXIA** |
+| `namespace` | `com.example` | `com.jaxia.app` |
+| `applicationId` | `com.aistudio.lookia.vstclr` | **`com.jaxia.app`** |
+| Paquete fuente | `com.example.*` | `com.jaxia.app.*` |
+| Clases | `LookIATheme`, `LookIAViewModel`, `LookIARepository`… | `JaxiaTheme`, `JaxiaViewModel`, `JaxiaRepository`… |
+| Base de datos | `lookia_database` | `jaxia_database` |
+| Tema XML | `Theme.MyApplication` | `Theme.Jaxia` |
+
+### Icono
+
+El icono anterior incrustaba un **JPEG de 1024×1024** como capa frontal del
+icono adaptativo. Eso es incorrecto por dos motivos: un JPEG **no tiene canal
+alfa**, así que la máscara del launcher recortaba un cuadrado crema en lugar de
+la silueta del logo; y la capa `monochrome` (iconos temáticos de Android 13+)
+apuntaba a ese mismo `layer-list`, lo cual no es válido.
+
+Se sustituyó por un **icono adaptativo vectorial** con el monograma "J", el
+destello y el terminal circular del logotipo, en degradado carbón → rosa sobre
+fondo crema, con capa monocroma propia. Al ser vectorial es nítido en cualquier
+densidad y pesa ~3 KB frente a los 563 KB del JPEG, que se eliminó por quedar sin
+referencias.
+
+También se subió `minSdk` de 24 a **26**: por debajo de API 26 el launcher no usa
+iconos adaptativos y recurría a los `mipmap-*dpi/ic_launcher.webp`, que seguían
+siendo **el robot verde de Android Studio**. API 24-25 está por debajo del ~1 % de
+dispositivos activos en 2026, así que elevar el mínimo elimina el icono obsoleto
+en vez de publicarlo. Si necesitas conservar API 24-25, hay que generar los PNG
+del icono en las cinco densidades y revertir `minSdk`.
+
+### Paleta
+
+La paleta de marca del logotipo (crema `#F7F4F1`, carbón `#2B2523`, rosa
+empolvado `#B07C8A`) se registró en `res/values/brand_colors.xml` y se usa en el
+icono y en el tema base de la plataforma.
+
+**La paleta de la interfaz sigue siendo la terracota original**, porque
+alinearla al rosa del logotipo implica reescribir los 174 colores hardcodeados
+descritos en A-07. Terracota y rosa empolvado son tonos cálidos vecinos y
+conviven sin chocar, pero si quieres coherencia total con el logotipo, es el
+mismo refactor que habilita el modo oscuro: conviene hacer ambos a la vez.
+
+### Pendiente de tu parte
+
+El logotipo llegó como imagen en el chat, no como archivo, así que **no pude
+incrustar ese mapa de bits**. Para la ficha de Play necesitas subir aparte:
+
+- **Icono 512×512 PNG** (32 bits, con alfa) — se sube en Play Console, no va en el AAB
+- **Gráfico destacado 1024×500 PNG/JPEG**
+- Si quieres el logotipo completo dentro de la app (no solo el monograma),
+  añádelo al repositorio como `app/src/main/res/drawable-nodpi/img_jaxia_logo.png`
+  **en PNG con transparencia**, no en JPEG
+
+Además, `img_jaxia_hero.jpg` (1 MB) sigue siendo la imagen de portada heredada de
+LookIA y se muestra en la pantalla de Inicio: conviene reemplazarla por artwork
+de JAXIA y recomprimirla — 1 MB para una sola imagen decorativa es excesivo.
 
 ---
 

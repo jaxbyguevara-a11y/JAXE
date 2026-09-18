@@ -1,4 +1,4 @@
-# LookIA — R8 configuration
+# JAXIA — R8 configuration
 #
 # R8 is enabled for release builds (AUDITORIA.md B-04). These rules cover the
 # reflection-based frameworks the app uses. Keep this file in sync with the
@@ -19,7 +19,7 @@
 
 # Entities are instantiated reflectively by the generated DAO code, and their
 # constructor parameter names must survive for Room's column mapping.
--keepclassmembers class com.aistudio.lookia.data.model.** {
+-keepclassmembers class com.jaxia.app.data.model.** {
     <init>(...);
     <fields>;
 }

@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "LookIA"
+rootProject.name = "JAXIA"
 
 include(":app")

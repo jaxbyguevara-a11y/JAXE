@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">LookIA</string>
+    <string name="app_name">JAXIA</string>
 
     <!--
-      LookIA is authored in Spanish for the Colombian market and ships a single
+      JAXIA is authored in Spanish for the Colombian market and ships a single
       locale, so UI copy currently lives inline in the Compose sources.
       Extracting all ~8.000 strings here is tracked as AUDITORIA.md M-01 and is
       only worth doing when a second language is planned.

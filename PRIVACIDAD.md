@@ -1,4 +1,4 @@
-# Política de Privacidad — LookIA
+# Política de Privacidad — JAXIA
 
 **Última actualización:** 18 de septiembre de 2026
 **Responsable:** *(completar: nombre legal o razón social del desarrollador)*
@@ -14,9 +14,9 @@
 
 ## 1. Resumen
 
-LookIA funciona **completamente sin conexión**. Toda la información que
+JAXIA funciona **completamente sin conexión**. Toda la información que
 introduces se guarda **únicamente en tu dispositivo**. No existen servidores de
-LookIA, no se crea ninguna cuenta y no se transmite información a nosotros ni a
+JAXIA, no se crea ninguna cuenta y no se transmite información a nosotros ni a
 terceros.
 
 Esto es verificable en el código fuente: la aplicación **no declara el permiso
@@ -27,7 +27,7 @@ le impide realizar cualquier conexión de red.
 
 ## 2. Qué información se guarda
 
-Toda en una base de datos local (`lookia_database`) dentro del almacenamiento
+Toda en una base de datos local (`jaxia_database`) dentro del almacenamiento
 privado de la app:
 
 | Categoría | Ejemplos | Origen |
@@ -39,7 +39,7 @@ privado de la app:
 
 ---
 
-## 3. Qué NO hace LookIA
+## 3. Qué NO hace JAXIA
 
 - **No accede a la cámara** ni toma fotografías de tu cuerpo.
 - **No accede a tu galería** de fotos.
@@ -56,7 +56,7 @@ privado de la app:
 ## 4. Copias de seguridad
 
 Las copias de seguridad automáticas de Android (Google Drive) y la transferencia
-a un dispositivo nuevo están **desactivadas** para los datos de LookIA. Esto se
+a un dispositivo nuevo están **desactivadas** para los datos de JAXIA. Esto se
 declara explícitamente en `res/xml/data_extraction_rules.xml` y
 `res/xml/backup_rules.xml`, y mediante `android:allowBackup="false"`.
 
@@ -67,7 +67,7 @@ declara explícitamente en `res/xml/data_extraction_rules.xml` y
 
 ## 5. Contenido de ejemplo
 
-Al instalarla por primera vez, LookIA incluye prendas, looks y publicaciones de
+Al instalarla por primera vez, JAXIA incluye prendas, looks y publicaciones de
 comunidad **de demostración**, para que la app sea utilizable desde el inicio.
 
 Ese contenido **no proviene de personas reales** y así se indica dentro de la
@@ -99,7 +99,7 @@ ejerces directamente en la app, mediante los controles descritos arriba.
 
 ## 7. Menores de edad
 
-LookIA no está dirigida a menores de 13 años y no recoge información de forma
+JAXIA no está dirigida a menores de 13 años y no recoge información de forma
 consciente sobre ellos. Al no transmitirse dato alguno fuera del dispositivo, no
 existe recolección remota de información de menores.
 

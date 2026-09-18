@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Paleta de marca JAXIA, tomada del logotipo: crema, carbón y rosa empolvado.
+  Se usa en el icono adaptativo y en el tema base de la plataforma.
+-->
+<resources>
+    <color name="jaxia_cream">#F7F4F1</color>
+    <color name="jaxia_charcoal">#2B2523</color>
+    <color name="jaxia_rose">#B07C8A</color>
+    <color name="jaxia_rose_deep">#9E6575</color>
+    <color name="jaxia_rose_light">#C99AA6</color>
+</resources>

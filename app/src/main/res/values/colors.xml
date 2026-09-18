@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Only the colors the platform theme needs live here. The full LookIA palette is
-  defined once in Kotlin (ui/theme/Color.kt) and consumed by Compose.
-  The Android Studio template palette (purple_500, teal_200, …) was removed —
-  it was unused and clashed with the brand (AUDITORIA.md M-08).
+  La paleta de marca vive en brand_colors.xml; la paleta completa de la interfaz
+  se define en Kotlin (ui/theme/Color.kt) y la consume Compose.
+  Se eliminó la paleta morada de plantilla (purple_500, teal_200, …), que no se
+  usaba y no correspondía a la identidad (AUDITORIA.md M-08).
 -->
-<resources>
-    <color name="linen_background">#FBF8F5</color>
-    <color name="terracotta_primary">#A84A33</color>
-</resources>
+<resources />

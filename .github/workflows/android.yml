@@ -71,7 +71,7 @@ jobs:
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
-          name: lookia-release-aab
+          name: jaxia-release-aab
           path: app/build/outputs/bundle/release/*.aab
           if-no-files-found: error
 

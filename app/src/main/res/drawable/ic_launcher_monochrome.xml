@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Capa monocroma para los iconos temáticos de Android 13+. Debe ser una silueta
+  de un solo color: el sistema la re-colorea según el fondo del usuario.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108"
+    android:tint="#000000">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M31,60m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,28 L76,28 L76,40 L66,40 L66,59 C66,71 58,80 46,80 C35,80 26,73 24,63 L36,60 C37,66 40,68 45,68 C51,68 54,64 54,58 L54,40 L42,40 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M84,26 L86.6,33.4 L94,36 L86.6,38.6 L84,46 L81.4,38.6 L74,36 L81.4,33.4 Z" />
+</vector>

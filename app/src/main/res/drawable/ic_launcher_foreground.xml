@@ -1,9 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:width="66dp"
-        android:height="66dp"
-        android:drawable="@drawable/ic_lookia_logo"
-        android:gravity="center" />
-</layer-list>
+<!--
+  Monograma "J" de JAXIA con degradado carbón → rosa, más el destello y el
+  terminal circular del logotipo.
 
+  Sustituye al layer-list anterior, que incrustaba un JPEG de 1024×1024 como
+  capa frontal: un JPEG no tiene canal alfa, así que la máscara adaptativa
+  recortaba un cuadrado crema en vez del logo, y la capa `monochrome` (iconos
+  temáticos de Android 13+) quedaba inválida.
+
+  Todo el trazo cae dentro de la zona segura de 72×72 del viewport de 108×108.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Terminal circular inferior izquierdo -->
+    <path
+        android:fillColor="@color/jaxia_rose_light"
+        android:pathData="M31,60m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0" />
+
+    <!-- Monograma J -->
+    <path android:pathData="M42,28 L76,28 L76,40 L66,40 L66,59 C66,71 58,80 46,80 C35,80 26,73 24,63 L36,60 C37,66 40,68 45,68 C51,68 54,64 54,58 L54,40 L42,40 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="30"
+                android:startY="28"
+                android:endX="76"
+                android:endY="80"
+                android:type="linear">
+                <item android:offset="0.0" android:color="@color/jaxia_charcoal" />
+                <item android:offset="0.55" android:color="@color/jaxia_rose_deep" />
+                <item android:offset="1.0" android:color="@color/jaxia_rose_light" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Destello de cuatro puntas -->
+    <path
+        android:fillColor="@color/jaxia_charcoal"
+        android:pathData="M84,26 L86.6,33.4 L94,36 L86.6,38.6 L84,46 L81.4,38.6 L74,36 L81.4,33.4 Z" />
+    <path
+        android:fillColor="@color/jaxia_rose"
+        android:pathData="M73,47 L74.4,51.1 L78.5,52.5 L74.4,53.9 L73,58 L71.6,53.9 L67.5,52.5 L71.6,51.1 Z" />
+</vector>

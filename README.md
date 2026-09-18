@@ -1,4 +1,4 @@
-# LookIA
+# JAXIA
 
 **Vístete con lo que tienes.** Aplicación Android para gestión consciente del
 clóset: organiza tus prendas, arma looks con lo que ya posees, visualízalos en un
@@ -14,7 +14,7 @@ Este repositorio contiene el proyecto tras una auditoría técnica integral.
 Lee **[`AUDITORIA.md`](AUDITORIA.md)** para el detalle completo de hallazgos,
 severidades y correcciones aplicadas.
 
-> **Nota importante sobre la "IA":** pese al nombre, LookIA **no utiliza
+> **Nota importante sobre la "IA":** pese al nombre, JAXIA **no utiliza
 > inteligencia artificial**. El generador de looks es un motor de reglas
 > determinista. Las dependencias de Firebase AI, Retrofit, OkHttp, Moshi y Coil
 > que venían declaradas nunca se usaban en el código y fueron eliminadas.
@@ -113,8 +113,8 @@ Pendientes que requieren decisiones o activos tuyos — detalle en
 ## Estructura
 
 ```
-app/src/main/java/com/aistudio/lookia/
-├── LookIAApplication.kt        # Singleton de base de datos y repositorio
+app/src/main/java/com/jaxia/app/
+├── JaxiaApplication.kt         # Singleton de base de datos y repositorio
 ├── MainActivity.kt             # Navegación por pestañas
 ├── data/
 │   ├── model/                  # Entidades Room + inspiración diaria
@@ -123,7 +123,7 @@ app/src/main/java/com/aistudio/lookia/
 │   ├── repository/             # Lógica de negocio y motor de looks
 │   └── DefaultSeedData.kt      # Contenido de ejemplo del primer arranque
 └── ui/
-    ├── LookIAViewModel.kt
+    ├── JaxiaViewModel.kt
     ├── format/                 # Formato de moneda es-CO
     ├── screens/                # Inicio, Vísteme, Probador, Clóset, Ahorro, Comunidad
     ├── components/             # Diálogos y avatar

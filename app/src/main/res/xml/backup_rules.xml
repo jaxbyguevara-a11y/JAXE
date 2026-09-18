@@ -6,7 +6,7 @@
   (AUDITORIA.md B-07).
 -->
 <full-backup-content>
-    <exclude domain="database" path="lookia_database" />
-    <exclude domain="database" path="lookia_database-shm" />
-    <exclude domain="database" path="lookia_database-wal" />
+    <exclude domain="database" path="jaxia_database" />
+    <exclude domain="database" path="jaxia_database-shm" />
+    <exclude domain="database" path="jaxia_database-wal" />
 </full-backup-content>

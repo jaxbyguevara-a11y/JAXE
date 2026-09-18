@@ -25,12 +25,16 @@ val releaseSigningAvailable: Boolean =
     file(keystorePath).exists()
 
 android {
-  namespace = "com.aistudio.lookia"
+  namespace = "com.jaxia.app"
   compileSdk { version = release(36) { minorApiLevel = 1 } }
 
   defaultConfig {
-    applicationId = "com.aistudio.lookia.vstclr"
-    minSdk = 24
+    applicationId = "com.jaxia.app"
+    // Android 8.0. Adaptive icons (mipmap-anydpi-v26) require API 26; below it
+    // the launcher falls back to raster mipmaps, which still carried the
+    // Android Studio robot. API 24-25 is under ~1% of active devices in 2026,
+    // so raising the floor removes the stale icon instead of shipping it.
+    minSdk = 26
     targetSdk = 36
     versionCode = 1
     versionName = "1.0"
@@ -100,7 +104,7 @@ ksp { arg("room.schemaLocation", "$projectDir/schemas") }
 
 kotlin { compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) } }
 
-// LookIA is fully offline: no network stack, no Firebase, no image loading from
+// JAXIA is fully offline: no network stack, no Firebase, no image loading from
 // URLs. Dependencies that were declared but never referenced in any source file
 // (firebase-ai, firebase-appcheck, retrofit, okhttp, moshi, coil) were removed —
 // see AUDITORIA.md §A-01. They remain available in gradle/libs.versions.toml if

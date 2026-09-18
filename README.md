@@ -37,7 +37,10 @@ severidades y correcciones aplicadas.
 
 ## Compilar
 
-**Requisitos:** JDK 17 y Android SDK con la plataforma 36.
+**Requisitos:** JDK 21 y Android SDK con la plataforma 36.
+
+> JDK 21 es necesario para los tests: Robolectric exige Java 21 para crear su
+> sandbox de Android SDK 36. El bytecode sigue compilándose a nivel 17.
 
 ```bash
 ./gradlew assembleDebug        # APK de depuración

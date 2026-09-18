@@ -15,7 +15,9 @@ private val COP: NumberFormat = NumberFormat.getIntegerInstance(Locale("es", "CO
  */
 fun formatCop(amount: Double): String {
     if (amount.isNaN() || amount.isInfinite()) return "$0"
-    return "$" + COP.format(amount.toLong())
+    // Round rather than truncate: a cost-per-wear of 12.499,99 should read
+    // $12.500, not $12.499.
+    return "$" + COP.format(Math.round(amount))
 }
 
 /** Same as [formatCop] but appends the currency code, for headline figures. */

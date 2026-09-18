@@ -94,7 +94,22 @@ android {
     }
   }
 
-  testOptions { unitTests { isIncludeAndroidResources = true } }
+  testOptions {
+    unitTests {
+      isIncludeAndroidResources = true
+      all {
+        // Without this, a failing CI build prints only "There were failing
+        // tests. See the report at file:///..." — a local path nobody can open
+        // from the log. Print the failures inline instead.
+        it.testLogging {
+          events("failed", "skipped")
+          exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+          showStackTraces = true
+          showCauses = true
+        }
+      }
+    }
+  }
 
   dependenciesInfo {
     includeInApk = false

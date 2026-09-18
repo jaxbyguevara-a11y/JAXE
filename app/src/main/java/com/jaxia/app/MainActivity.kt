@@ -63,6 +63,7 @@ import com.jaxia.app.ui.screens.CommunityScreen
 import com.jaxia.app.ui.screens.HomeScreen
 import com.jaxia.app.ui.screens.ProbadorAvatarScreen
 import com.jaxia.app.ui.screens.VestirmeScreen
+import com.jaxia.app.ui.screens.WelcomeScreen
 import com.jaxia.app.ui.theme.CardBorder
 import com.jaxia.app.ui.theme.EspressoTextPrimary
 import com.jaxia.app.ui.theme.EspressoTextSecondary
@@ -83,10 +84,23 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             JaxiaTheme {
+                // El ViewModel se construye ANTES de la bienvenida a propósito:
+                // así Room carga el clóset mientras la pantalla está visible y
+                // la app entra con los datos ya listos, sin parpadeo de lista
+                // vacía.
                 val viewModel: JaxiaViewModel = viewModel(
                     factory = JaxiaViewModelFactory(repository)
                 )
-                JaxiaMainApp(viewModel = viewModel)
+
+                // rememberSaveable para que una rotación durante la bienvenida
+                // no la reinicie, ni la vuelva a mostrar una vez terminada.
+                var showWelcome by rememberSaveable { mutableStateOf(true) }
+
+                if (showWelcome) {
+                    WelcomeScreen(onFinished = { showWelcome = false })
+                } else {
+                    JaxiaMainApp(viewModel = viewModel)
+                }
             }
         }
     }

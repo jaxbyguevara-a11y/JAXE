@@ -55,6 +55,7 @@ La app se instala como **JAXIA** y abre en Inicio. Recorrido sugerido:
 
 | Pestaña | Qué comprobar |
 |---|---|
+| **Bienvenida** | Al abrir, el logotipo aparece con fundido sobre fondo crema y pasa solo a los ~2 s |
 | **Inicio** | Inspiración diaria (flechas para cambiar de día), prenda olvidada, acceso a Comunidad desde la barra superior |
 | **Vísteme** | Cambia ocasión y ánimo, pulsa generar. **Las tres propuestas deben cambiar** según lo que elijas — antes salían siempre iguales |
 | | Marca una propuesta como favorita: **el corazón debe quedar marcado** (antes no hacía nada) |

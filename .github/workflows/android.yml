@@ -61,8 +61,11 @@ jobs:
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
+      # roborazzi.test.record=true hace que captureRoboImage escriba los PNG.
+      # Sin ese flag los tests pasan pero no se genera ninguna imagen, y el
+      # artefacto de capturas sale vacío.
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest -Proborazzi.test.record=true
 
       # Capturas renderizadas por Roborazzi (pantalla de bienvenida).
       - name: Upload rendered screenshots

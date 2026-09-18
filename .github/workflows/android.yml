@@ -51,6 +51,16 @@ jobs:
       - name: Assemble debug
         run: ./gradlew assembleDebug
 
+      # APK de depuración instalable para pruebas en dispositivo real.
+      # applicationIdSuffix ".debug" permite instalarlo junto a una eventual
+      # versión de Play sin conflicto.
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: jaxia-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
       - name: Unit tests
         run: ./gradlew testDebugUnitTest
 

@@ -53,13 +53,20 @@ jobs:
       # Release bundle. Signing material comes from repository secrets; when
       # they are absent (forks, PRs) the build still runs and produces an
       # unsigned bundle rather than failing — see app/build.gradle.kts.
+      # The `secrets` context is not available in a step-level `if:`, so the
+      # presence check happens in the shell instead.
       - name: Decode upload keystore
-        if: ${{ github.event_name != 'pull_request' && secrets.KEYSTORE_BASE64 != '' }}
+        if: github.event_name != 'pull_request'
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/upload-key.jks"
-          echo "KEYSTORE_PATH=$RUNNER_TEMP/upload-key.jks" >> "$GITHUB_ENV"
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/upload-key.jks"
+            echo "KEYSTORE_PATH=$RUNNER_TEMP/upload-key.jks" >> "$GITHUB_ENV"
+            echo "Keystore configurado: el AAB saldrá firmado."
+          else
+            echo "Sin secreto KEYSTORE_BASE64: el AAB saldrá SIN FIRMAR."
+          fi
 
       - name: Build release bundle (AAB)
         env:

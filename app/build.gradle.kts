@@ -26,7 +26,10 @@ val releaseSigningAvailable: Boolean =
 
 android {
   namespace = "com.jaxia.app"
-  compileSdk { version = release(36) { minorApiLevel = 1 } }
+  // Plain API 36. The AI Studio export pinned minor API level 36.1 (Android 16
+  // QPR1), which needs a separate SDK platform that is not on CI images and
+  // buys nothing here: the app uses no 36.1-only API.
+  compileSdk = 36
 
   defaultConfig {
     applicationId = "com.jaxia.app"

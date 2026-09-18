@@ -56,6 +56,8 @@ No hace falta instalar Gradle: el wrapper lo descarga.
 
 ## Firmar el release
 
+> Guía completa y segura, paso a paso: **[`FIRMA.md`](FIRMA.md)**.
+
 La firma se toma **exclusivamente de variables de entorno**; en el repositorio no
 hay ninguna credencial. Si faltan, el release compila igualmente pero sin firmar.
 

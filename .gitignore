@@ -20,3 +20,5 @@ debug.keystore
 *.jks
 *.keystore
 keystore.properties
+*.jks.b64
+*.b64

@@ -560,27 +560,64 @@ Checklist de publicación:
 ## 7. Decisión de producto que debes tomar: la "IA"
 
 Esta auditoría no puede resolver este punto por ti, porque es una decisión
-comercial, no técnica. Las opciones son tres:
+comercial, no técnica. Tres opciones, comparadas en lo que importa.
 
-**Opción 1 — Integrar IA real.** Conectar `firebase-ai` (ya declarado) con Gemini
-para generar recomendaciones de outfit reales a partir del clóset del usuario.
-Es coherente con el nombre y con el `metadata.json`. Coste: backend, gestión de
-API keys, latencia, cuota, y declaración de IA en la ficha de Play.
+> **Restricción transversal:** cualquiera que elijas se rige por
+> [`ARQUITECTURA-IA.md`](ARQUITECTURA-IA.md) — la IA recomienda, compara y
+> redacta; **nunca** calcula ni inventa un dato.
 
-**Opción 2 — Reposicionar sin IA.** Mantener el motor de reglas, mejorarlo
-(actualmente ignora `occasion` y `mood`), y **dejar de llamarlo IA**. El valor de
-la app —conciencia sobre consumo, aprovechar lo que ya tienes, comunidad de
-intercambio— es real y no necesita un LLM. Es la ruta más rápida y barata a
-publicación.
+### Comparación
 
-**Opción 3 — Híbrido.** Publicar ya con el motor de reglas honestamente
-etiquetado, y añadir IA como función posterior cuando haya tracción.
+| | **Opción 1 · IA real ya** | **Opción 2 · Sin IA** | **Opción 3 · Híbrido** |
+|---|---|---|---|
+| **Tiempo a publicar** | 2–4 meses | Ya (está listo) | Ya, IA después |
+| **Coste de desarrollo** | Alto: backend, autenticación, gestión de cuota, reintentos, caché | Ninguno adicional | Ninguno ahora |
+| **Coste recurrente** | Por token. Un modelo pequeño ronda décimas de centavo de dólar por recomendación; con 10.000 usuarias activas y 5 consultas/mes son cientos de dólares mensuales, y **escala con el uso, no con los ingresos** | $0 | $0 hasta activarlo |
+| **Superficie de ataque** | Clave de API que proteger, tráfico de red, datos del clóset saliendo del dispositivo, prompt injection | **Ninguna**: sin permiso `INTERNET` | Ninguna ahora |
+| **Privacidad** | El clóset y las medidas viajan a un tercero. Obliga a rehacer Data Safety y la política | Todo local. La política actual es cierta y fácil de defender | Local ahora |
+| **Cumplimiento Play** | Declarar función de IA generativa + mecanismo de reporte de contenido | Nada extra | Nada extra |
+| **Funciona sin conexión** | No | Sí | Sí |
+| **Calidad percibida** | Alta si funciona; frustrante cuando falla, va lento o agota cuota | Predecible, instantánea, algo rígida | Predecible ahora |
+| **Riesgo principal** | Gastar meses y dinero antes de saber si alguien quiere el producto | Que la competencia sí ofrezca algo más flexible | Ninguno relevante |
 
-**Recomiendo la Opción 3.** Te permite publicar en semanas en lugar de meses,
-elimina el riesgo de misrepresentation, y conserva el nombre "JAXIA" como marca
-sin que constituya una afirmación técnica (igual que "Loganía" o "Mediadía" no
-prometen nada). Lo que **no** es sostenible es el estado actual: declarar
-capacidad Gemini en metadatos y no tener IA.
+### Sobre la seguridad, en concreto
+
+Hoy JAXIA **no declara el permiso `INTERNET`**. Eso no es un detalle menor: el
+sistema operativo le impide físicamente abrir una conexión. Esa única línea
+ausente elimina de golpe filtración de datos, intercepción de tráfico, robo de
+clave de API y prompt injection.
+
+Añadir IA en la nube significa renunciar a esa garantía, y además:
+
+- **La clave de API no puede vivir en la app.** Cualquier APK es descompilable;
+  una clave embebida se extrae en minutos y te la gastan. Obliga a un backend
+  propio que la custodie — que es el verdadero coste oculto de la Opción 1.
+- **Cambia lo que debes declarar.** La política de privacidad actual afirma que
+  nada sale del dispositivo. Con IA en la nube eso deja de ser cierto, y una
+  discrepancia con el formulario de Data Safety es justo el tipo de problema que
+  costó el hallazgo B-05.
+
+Una IA **en dispositivo** (Gemini Nano, ML Kit) evita casi todo esto, pero exige
+hardware reciente, pesa decenas de MB y su calidad es sensiblemente menor.
+
+### Recomendación
+
+**Opción 3.** Publica ahora con el motor de reglas etiquetado con honestidad, y
+añade IA cuando tengas usuarias reales que te digan qué necesitan. Razones:
+
+1. **El producto ya funciona.** El motor de reglas corregido usa ocasión y ánimo,
+   rescata prendas olvidadas y calcula el valor real del clóset. Con 25 pruebas
+   en verde.
+2. **El nombre no te obliga.** "JAXIA" y *"Tu estilo. Tu clóset. Tu
+   inteligencia."* leen como marca y como la inteligencia **de la usuaria**. No
+   es una afirmación técnica y no crea riesgo de misrepresentation.
+3. **Invertir en IA antes de tener tracción es apostar a ciegas.** Cuando sepas
+   qué preguntan las usuarias, sabrás qué debe hacer el modelo — y probablemente
+   descubras que la mitad se resuelve con más reglas.
+
+Lo que **no** es sostenible es el estado original: declarar capacidad Gemini en
+los metadatos y no tener IA. Eso ya está corregido — `metadata.json` ya no
+declara `MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API`.
 
 ---
 

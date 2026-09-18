@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.MyApplication" parent="android:Theme.DeviceDefault.NoActionBar" />
+    <!--
+      Base theme used before Compose takes over. It matches the Compose light
+      palette so there is no white/terracotta flash on cold start.
+      LookIA ships light-only: the Compose screens hardcode light surfaces, so
+      following the system dark setting would render light text on white cards
+      (AUDITORIA.md A-07).
+    -->
+    <style name="Theme.LookIA" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/linen_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
 </resources>

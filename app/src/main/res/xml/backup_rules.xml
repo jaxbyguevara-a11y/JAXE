@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older than API 31
-   See https://developer.android.com/about/versions/12/backup-restore
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Applies to API 30 and below. Cloud backup is disabled app-wide via
+  android:allowBackup="false", but these rules stay explicit so that re-enabling
+  backup later cannot silently ship body measurements off the device
+  (AUDITORIA.md B-07).
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <exclude domain="database" path="lookia_database" />
+    <exclude domain="database" path="lookia_database-shm" />
+    <exclude domain="database" path="lookia_database-wal" />
 </full-backup-content>

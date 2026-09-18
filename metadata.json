@@ -1,6 +1,6 @@
 {
   "name": "LookIA",
-  "description": "Vístete con lo que tienes. Autentica tu estilo con tu avatar virtual, comunidad de segunda oportunidad (trueque, regalo, venta) e inspiración espiritual diaria.",
+  "description": "Vístete con lo que tienes. Organiza tu clóset, arma looks con las prendas que ya posees, visualízalos en tu avatar y comparte lo que ya no usas. Funciona sin conexión.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }

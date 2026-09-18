@@ -14,5 +14,9 @@
 .externalNativeBuild
 .cxx
 local.properties
-.env
 debug.keystore
+
+# Keystores and signing material — never commit
+*.jks
+*.keystore
+keystore.properties

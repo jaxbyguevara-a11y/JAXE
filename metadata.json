@@ -1,0 +1,6 @@
+{
+  "name": "LookIA",
+  "description": "Vístete con lo que tienes. Autentica tu estilo con tu avatar virtual, comunidad de segunda oportunidad (trueque, regalo, venta) e inspiración espiritual diaria.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

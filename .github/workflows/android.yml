@@ -64,6 +64,15 @@ jobs:
       - name: Unit tests
         run: ./gradlew testDebugUnitTest
 
+      # Capturas renderizadas por Roborazzi (pantalla de bienvenida).
+      - name: Upload rendered screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jaxia-screenshots
+          path: app/src/test/screenshots/
+          if-no-files-found: ignore
+
       - name: Upload test report
         if: always()
         uses: actions/upload-artifact@v4

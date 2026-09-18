@@ -8,6 +8,8 @@ Funciona **completamente sin conexión**. Todos los datos viven en el dispositiv
 
 ---
 
+![Android CI](https://github.com/jaxbyguevara-a11y/JAXE/actions/workflows/android.yml/badge.svg?branch=claude/android-app-audit-oswav2)
+
 ## Estado del proyecto
 
 Este repositorio contiene el proyecto tras una auditoría técnica integral.
@@ -96,6 +98,17 @@ repositorio:
 | `STORE_PASSWORD` | Contraseña del keystore |
 | `KEY_ALIAS` | Alias de la clave (por defecto `upload`) |
 | `KEY_PASSWORD` | Contraseña de la clave |
+
+---
+
+## Descargar el AAB
+
+Cada push genera el bundle como artefacto de CI. Para obtenerlo:
+**Actions → el run más reciente → Artifacts → `jaxia-release-aab`**.
+
+Sin los secretos de firma configurados **el AAB sale sin firmar** y Play Console
+lo rechazará. Define los cuatro secretos de la tabla anterior para que salga
+listo para subir.
 
 ---
 

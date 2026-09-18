@@ -693,26 +693,63 @@ de JAXIA y recomprimirla — 1 MB para una sola imagen decorativa es excesivo.
 
 ---
 
-## 9. Nota sobre la verificación de compilación
+## 9. Verificación de compilación
 
-**No pude compilar el proyecto en este entorno.** La política de egreso de red de
-la sesión bloquea `dl.google.com`, que es el único origen del SDK de Android
-(plataformas y build-tools):
+**No pude compilar el proyecto en el entorno de auditoría.** La política de
+egreso de red de la sesión bloquea `dl.google.com`, que es el único origen del
+SDK de Android (plataformas y build-tools):
 
 ```
 host: dl.google.com:443 → 403 (policy denial)
 ```
 
-`maven.google.com`, `repo1.maven.org` y `services.gradle.org` sí son accesibles,
-pero sin `android.jar` no hay compilación posible. Siguiendo la norma del entorno,
-reporto el host bloqueado en lugar de intentar rodearlo.
+`maven.google.com`, `repo1.maven.org` y `services.gradle.org` sí eran accesibles,
+pero sin `android.jar` no hay compilación posible. Siguiendo la norma del
+entorno, se reportó el host bloqueado en lugar de intentar rodearlo.
 
-**Consecuencia:** las correcciones de este repositorio están verificadas por
-análisis estático, revisión cruzada y consistencia de tipos, **pero no por una
-compilación ejecutada**. Para cerrar esa brecha se incluye un workflow de GitHub
-Actions (`.github/workflows/android.yml`) que compila, pasa los tests y genera el
-AAB firmado en un runner con el SDK completo. **El primer push a la rama
-ejecutará esa verificación real.**
+**Por eso se añadió el workflow de CI, que sí ejecuta la verificación real.**
+
+### Resultado
+
+El pipeline está **en verde** sobre el commit `0717ebe`:
+
+| Paso | Resultado |
+|---|---|
+| Assemble debug | ✅ |
+| Tests unitarios (**25**) | ✅ |
+| Build release bundle (AAB) | ✅ |
+| Artefactos publicados | `jaxia-release-aab` (4,4 MB), `r8-mapping` (2,1 MB), `unit-test-report` |
+
+La existencia del `mapping.txt` de 2,1 MB confirma que **R8 se ejecutó de
+verdad** (B-04): sin minificación no se genera ese archivo.
+
+### Lo que la verificación real encontró
+
+Cinco defectos que el análisis estático no detectó. Se registran aquí porque
+son la justificación de tener CI:
+
+1. **Workflow inválido.** GitHub Actions no expone el contexto `secrets` en un
+   `if:` de paso; el archivo se rechazaba antes de crear ningún job.
+2. **`setup-android` fallaba** instalando el paquete `tools`, que Google retiró
+   del repositorio del SDK.
+3. **`compileSdk = release(36) { minorApiLevel = 1 }`** exigía la plataforma
+   Android 16 QPR1, ausente en las imágenes de CI. Se simplificó a `36`.
+4. **Faltaba el import de `rememberSaveable`** en `ProbadorAvatarScreen.kt` —
+   un error de compilación introducido al corregir A-05.
+5. **Robolectric requiere JDK 21** para Android SDK 36 (M-13).
+
+También se corrigió un defecto propio detectado por los tests nuevos:
+`formatCop` truncaba en vez de redondear, mostrando `$12.499` para 12.499,99.
+
+### Lo que sigue sin verificarse
+
+- **El AAB sale sin firmar** mientras no definas los secretos del repositorio
+  (`KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`). El paso de
+  firma se ejecuta y avisa por log de que no hay keystore.
+- **No hay pruebas en dispositivo ni emulador.** Los 25 tests son unitarios de
+  JVM; el comportamiento en tiempo de ejecución (navegación, migración de Room
+  sobre una base existente, rendimiento de Compose) no está cubierto.
+- **No hay tests de UI instrumentados** más allá del de plantilla.
 
 ---
 
